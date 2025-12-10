@@ -1,0 +1,5 @@
+{
+  "name": "NanoFit",
+  "description": "A virtual try-on application using Gemini 3 Pro and Nano Banana models to seamlessly blend clothing and accessories onto user photos.",
+  "requestFramePermissions": []
+}

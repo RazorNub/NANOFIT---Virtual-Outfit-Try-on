@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NANOFIT | AI Atelier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --ease-moreli: cubic-bezier(0.87, 0, 0.13, 1);
+        --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+      }
+      
+      body {
+        font-family: 'Manrope', sans-serif;
+        background-color: #000000;
+        color: #ffffff;
+        overflow-x: hidden;
+      }
+
+      h1, h2, h3, .font-display {
+        font-family: 'Oswald', sans-serif;
+      }
+
+      /* Preloader Split Curtain */
+      .curtain-panel {
+        transition: transform 1.2s var(--ease-moreli);
+        will-change: transform;
+      }
+      .curtain-open-top {
+        transform: translateY(-100%);
+      }
+      .curtain-open-bottom {
+        transform: translateY(100%);
+      }
+
+      /* Kinetic Typography Animation */
+      .char-wrapper {
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: bottom;
+      }
+      
+      .char {
+        display: inline-block;
+        /* Start position handled by specific classes */
+        will-change: transform;
+      }
+
+      .char.from-bottom {
+        transform: translateY(105%);
+        animation: slide-in-bottom 1.4s var(--ease-out-expo) forwards;
+      }
+
+      .char.from-top {
+        transform: translateY(-105%);
+        animation: slide-in-top 1.4s var(--ease-out-expo) forwards;
+      }
+
+      @keyframes slide-in-bottom {
+        0% { transform: translateY(105%); }
+        100% { transform: translateY(0); }
+      }
+
+      @keyframes slide-in-top {
+        0% { transform: translateY(-105%); }
+        100% { transform: translateY(0); }
+      }
+
+      /* Dissolve Effect */
+      .preloader-content {
+        transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+      }
+      
+      .preloader-content.dissolve {
+        opacity: 0;
+        transform: scale(1.2);
+        filter: blur(12px);
+      }
+
+      /* Custom Selection */
+      ::selection {
+        background: #ffffff;
+        color: #000000;
+      }
+
+      /* Hide Scrollbar */
+      ::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+      
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover, 
+      input:-webkit-autofill:focus, 
+      input:-webkit-autofill:active{
+          -webkit-box-shadow: 0 0 0 30px black inset !important;
+          -webkit-text-fill-color: white !important;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.32.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
