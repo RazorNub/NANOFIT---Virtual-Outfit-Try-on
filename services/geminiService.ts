@@ -12,6 +12,8 @@ interface ServiceOptions {
 const getAiClient = (options: ServiceOptions) => {
   // Priority: 1. Custom Key passed from UI, 2. Env Var (for hosted/studio envs)
   const apiKey = options.customApiKey || process.env.API_KEY;
+  console.log(`[GeminiService] Initializing client. Key provided manually: ${!!options.customApiKey}`);
+  
   if (!apiKey) {
     throw new Error("No API key available. Please enter a valid API key in the interface.");
   }
@@ -41,33 +43,6 @@ const getItemDescription = async (
   } catch (e) {
     console.warn("Failed to generate description, using fallback.", e);
     return "stylish clothing item";
-  }
-};
-
-/**
- * Step 3: Internal Review Layer.
- * Checks if the generated image is valid (has a person).
- */
-const validateResult = async (
-  generatedImageBase64: string,
-  options: ServiceOptions
-): Promise<boolean> => {
-  try {
-    const ai = getAiClient(options);
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: {
-        parts: [
-          { inlineData: { mimeType: 'image/png', data: cleanBase64(generatedImageBase64) } },
-          { text: "Look at this image. Does it show a person wearing clothing? Answer exactly YES or NO." }
-        ]
-      }
-    });
-    const text = response.text?.trim().toUpperCase();
-    return text?.includes("YES") ?? true; 
-  } catch (e) {
-    console.warn("Validation check failed, skipping.", e);
-    return true; 
   }
 };
 
@@ -132,7 +107,7 @@ const safetySettings = [
 ];
 
 /**
- * Main Generation Function with Auto-Prompting and Review Layer
+ * Main Generation Function with Auto-Prompting
  */
 export const generateTryOn = async (
   personBase64: string,
@@ -260,14 +235,6 @@ Output only the final edited image.`;
       // Throw the last meaningful error
       const errorMsg = lastError instanceof Error ? lastError.message : "Unknown error";
       throw new Error(`Generation failed: ${errorMsg}`);
-  }
-
-  // --- STEP 3: Internal Review Layer ---
-  options.onStatusUpdate?.("Reviewing result quality...");
-  const isValid = await validateResult(generatedImage, options);
-
-  if (!isValid) {
-      console.warn("Internal review failed: Image might not show a person.");
   }
 
   return generatedImage;
